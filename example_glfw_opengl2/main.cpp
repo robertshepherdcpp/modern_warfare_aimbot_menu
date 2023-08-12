@@ -105,6 +105,10 @@ bool ServerInfo = true;
 bool BulletTracers = true;
 bool ColouredGameUI = true;
 
+bool noRecoil = true;
+bool noShellShock = true;
+bool noFog = true;
+
 auto save_to_file() -> void
 {
     std::ofstream file("aimbot_menu.txt");
@@ -156,6 +160,9 @@ auto save_to_file() -> void
     file << "Server Info:          " << ServerInfo << "\n";
     file << "Bullet Tracers:       " << BulletTracers << "\n";
     file << "Coloured Game UI:     " << ColouredGameUI << "\n";
+    file << "No Recoil:            " << noRecoil << "\n";
+    file << "No Shell Shock:       " << noShellShock << "\n";
+    file << "No Fog:               " << noFog << "\n";
 }
 
 int main(int, char**)
@@ -423,7 +430,10 @@ int main(int, char**)
 
                 if (ImGui::BeginTabItem("Removals"))
                 {
-                    ImGui::Text("This is the Cucumber tab!\nblah blah blah blah blah");
+                    ImGui::Checkbox("No recoil", &noRecoil);
+                    ImGui::Checkbox("No shellshock", &noShellShock);
+                    ImGui::Checkbox("No fog", &noFog);
+
                     ImGui::EndTabItem();
                 }
 
