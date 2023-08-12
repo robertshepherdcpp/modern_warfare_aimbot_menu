@@ -126,6 +126,20 @@ int Explosives_ = 400;
 int Loot = 20;
 int Items = 100;
 
+static ImVec4 EnemyPlayer =           ImVec4(255.0f / 255.0f, 64.0f  / 255.0f, 0.f   / 255.0f, 200.0f / 255.0f);
+static ImVec4 VisibleEnemyPlayer =    ImVec4(255.0f / 255.0f, 255.0f / 255.0f, 0.f   / 255.0f, 200.0f / 255.0f);
+static ImVec4 FriendlyPlayer =        ImVec4(0.f    / 255.0f, 64.0f  / 255.0f, 255.f / 255.0f, 200.0f / 255.0f);
+static ImVec4 VisibleFriendlyPlayer = ImVec4(0.f    / 255.0f, 255.0f / 255.0f, 0.f   / 255.0f, 200.0f / 255.0f);
+static ImVec4 EnemyAI =               ImVec4(128.0f / 255.0f, 0.0f   / 255.0f, 128.f / 255.0f, 200.0f / 255.0f);
+static ImVec4 VisibleEnemyAI =        ImVec4(255.f  / 255.0f, 191.f  / 255.0f, 204.f / 255.0f, 200.0f / 255.0f);
+static ImVec4 FreindlyAI =            ImVec4(255.0f / 255.0f, 255.0f / 255.0f, 204.f / 255.0f, 200.0f / 255.0f);
+static ImVec4 VisibleFriendlyAI =     ImVec4(255.0f / 255.0f, 255.0f / 255.0f, 153.f / 255.0f, 200.0f / 255.0f);
+static ImVec4 AimbotTarget =          ImVec4(0.0f   / 255.0f, 255.0f / 255.0f, 255.f / 255.0f, 200.0f / 255.0f);
+static ImVec4 EnemyEntity =           ImVec4(255.0f / 255.0f, 0.0f   / 255.0f, 0.f   / 255.0f, 200.0f / 255.0f);
+static ImVec4 FriendlyEntity =        ImVec4(0.0f   / 255.0f, 255.0f / 255.0f, 0.f   / 255.f, 200.0f  / 255.0f);
+static ImVec4 LootColour =            ImVec4(255.0f / 255.0f, 255.f  / 255.0f, 255.f / 200.0f, 200.0f / 255.0f);
+static ImVec4 SpecialLoot =           ImVec4(255.0f / 255.0f, 191.0f / 255.0f, 26.f  / 200.0f, 200.0f / 255.0f);
+
 auto save_to_file() -> void
 {
     std::ofstream file("aimbot_menu.txt");
@@ -536,6 +550,20 @@ int main(int, char**)
                     ImGui::DragInt("Items (MP)", &Items, 1.0f, 0, 1000);
 
                     ImGui::SeparatorText("ESP & Chams Colours");
+
+                    ImGui::ColorEdit3("Enemy Player##1", (float*)&EnemyPlayer);
+                    ImGui::ColorEdit3("Visible Enemy Player##1", (float*)&VisibleEnemyPlayer);
+                    ImGui::ColorEdit3("Friendly Player##1", (float*)&FriendlyPlayer);
+                    ImGui::ColorEdit3("Visible Friendly Player##1", (float*)&VisibleFriendlyPlayer);
+                    ImGui::ColorEdit3("Enemy AI##1", (float*)&EnemyAI);
+                    ImGui::ColorEdit3("Visible Enemy AI##1", (float*)&VisibleEnemyAI);
+                    ImGui::ColorEdit3("Friendly AI##1", (float*)&FreindlyAI);
+                    ImGui::ColorEdit3("Visible Friendly AI##1", (float*)&VisibleFriendlyAI);
+                    ImGui::ColorEdit3("Aimbot Target##1", (float*)&AimbotTarget);
+                    ImGui::ColorEdit3("Enemy Entity##1", (float*)&EnemyEntity);
+                    ImGui::ColorEdit3("Friendly Entity##1", (float*)&FriendlyEntity);
+                    ImGui::ColorEdit3("Loot##1", (float*)&LootColour);
+                    ImGui::ColorEdit3("Special Loot##1", (float*)&SpecialLoot);
 
                     ImGui::EndTabItem();
                 }
