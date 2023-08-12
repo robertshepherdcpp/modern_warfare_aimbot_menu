@@ -84,6 +84,27 @@ bool drawLoot = true;
 bool Box_ = true;
 bool Name_ = true;
 
+bool playerAndAI = true;
+bool entities = true;
+bool outlineOnly = false;
+int outlineWidth = 2;
+
+const char* Type[] = { "x" };
+static int Type_item_current_idx = 0;
+
+int Size = 10;
+
+bool showOnAimbotTarget = true;
+
+bool compass = true;
+
+int compass_size = 200;
+
+bool HealthBar = true;
+bool ServerInfo = true;
+bool BulletTracers = true;
+bool ColouredGameUI = true;
+
 auto save_to_file() -> void
 {
     std::ofstream file("aimbot_menu.txt");
@@ -122,6 +143,19 @@ auto save_to_file() -> void
     file << "draw loot:            " << drawLoot << "\n";
     file << "Box_:                 " << Box_ << "\n";
     file << "Name_:                " << Name_ << "\n";
+    file << "Player and AI:        " << playerAndAI << "\n";
+    file << "entities:             " << entities << "\n";
+    file << "outline only:         " << outlineOnly << "\n";
+    file << "outline width:        " << outlineWidth << "\n";
+    file << "type:                 " << Type_item_current_idx << "\n";
+    file << "Size:                 " << Size << "\n";
+    file << "Show on aimbot target:" << showOnAimbotTarget << "\n";
+    file << "compass:              " << compass << "\n";
+    file << "compass size:         " << compass_size << "\n";
+    file << "Health Bar:           " << HealthBar << "\n";
+    file << "Server Info:          " << ServerInfo << "\n";
+    file << "Bullet Tracers:       " << BulletTracers << "\n";
+    file << "Coloured Game UI:     " << ColouredGameUI << "\n";
 }
 
 int main(int, char**)
@@ -334,17 +368,56 @@ int main(int, char**)
                     ImGui::Checkbox("Box", &Box_);
                     ImGui::Checkbox("Name", &Name_);
 
+                    ImGui::Text("Screenshots cleared: %d", num_screenshots_cleared);
+
                     ImGui::EndTabItem();
                 }
                 if (ImGui::BeginTabItem("Chams"))
                 {
-                    ImGui::Text("This is the Cucumber tab!\nblah blah blah blah blah");
+                    ImGui::SeparatorText("Chams");
+                    ImGui::Checkbox("Player & AI", &playerAndAI);
+                    ImGui::Checkbox("Entities", &entities);
+                    ImGui::Checkbox("Outline only", &outlineOnly);
+                    ImGui::SliderInt("Outline width", &outlineWidth, 0, 10, "%d");
+
+                    ImGui::Text("Screenshots cleaned: %d", num_screenshots_cleared);
+
                     ImGui::EndTabItem();
                 }
 
                 if (ImGui::BeginTabItem("Visuals"))
                 {
-                    ImGui::Text("This is the Cucumber tab!\nblah blah blah blah blah");
+                    ImGui::SeparatorText("Crosshair settings");
+
+                    const char* Type_combo_preview_value = Type[Type_item_current_idx];
+                    if (ImGui::BeginCombo("Type", Type_combo_preview_value))
+                    {
+                        for (int n = 0; n < IM_ARRAYSIZE(Type); n++)
+                        {
+                            const bool is_selected = (Type_item_current_idx == n);
+                            if (ImGui::Selectable(Type[n], is_selected))
+                                Type_item_current_idx = n;
+
+                            if (is_selected)
+                                ImGui::SetItemDefaultFocus();
+                        }
+                        ImGui::EndCombo();
+                    }
+                    ImGui::DragInt("Size", &Size, 1.0f, 0, 10);
+                    ImGui::Checkbox("Show on aimbot target", &showOnAimbotTarget);
+
+                    ImGui::SeparatorText("Compass Settings");
+                    ImGui::Checkbox("Compass", &compass);
+                    ImGui::DragInt("Compass Size", &compass_size, 1.0f, 0, 1000);
+
+                    ImGui::Separator();
+                    ImGui::Checkbox("Health Bar", &HealthBar);
+                    ImGui::Checkbox("Server Info", &ServerInfo);
+                    ImGui::Checkbox("Bullter Tracers", &BulletTracers);
+                    ImGui::Checkbox("Coloured Game UI", &ColouredGameUI);
+
+                    ImGui::Text("Screenshots cleared: %d", num_screenshots_cleared);
+
                     ImGui::EndTabItem();
                 }
 
