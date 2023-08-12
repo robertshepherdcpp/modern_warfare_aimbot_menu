@@ -121,6 +121,8 @@ int main(int, char**)
         {
             ImGui::Begin("PUNCHWARE MW2 CHAIR", &showAimbotMenu);
 
+            ImGui::Separator();
+
             ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
             if (ImGui::BeginTabBar("MyTabBar", tab_bar_flags))
             {
