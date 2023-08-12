@@ -58,6 +58,32 @@ bool boneBodyScanFirst = false;
 bool autoShoot = false;
 bool triggerBot = false;
 
+bool box = true;
+
+const char* box_type[] = { "2D" };
+static int box_type_item_current_idx = 0;
+
+const char* team[] = { "All" };
+static int team_item_current_idx = 0;
+
+bool name = true;
+bool distance = true;
+bool skeleton = true;
+bool weaponName = true;
+bool snapline = true;
+bool healthBar = true;
+
+bool drawItems = true;
+bool drawExplosives = true;
+bool drawVehicles = true;
+bool Box = true;
+bool Name = true;
+bool Distance = true;
+
+bool drawLoot = true;
+bool Box_ = true;
+bool Name_ = true;
+
 auto save_to_file() -> void
 {
     std::ofstream file("aimbot_menu.txt");
@@ -78,6 +104,24 @@ auto save_to_file() -> void
     file << "bone body scan first: " << boneBodyScanFirst << "\n";
     file << "auto shoot:           " << autoShoot << "\n";
     file << "triggerbot:           " << triggerBot << "\n";
+    file << "box:                  " << box << "\n";
+    file << "box type:             " << box_type_item_current_idx << "\n";
+    file << "team:                 " << team_item_current_idx << "\n";
+    file << "name:                 " << name << "\n";
+    file << "distance:             " << distance << "\n";
+    file << "skeleton:             " << skeleton << "\n";
+    file << "weapon name:          " << weaponName << "\n";
+    file << "snapline:             " << snapline << "\n";
+    file << "health bar:           " << healthBar << "\n";
+    file << "draw items:           " << drawItems << "\n";
+    file << "draw explosives:      " << drawExplosives << "\n";
+    file << "draw vehicles:        " << drawVehicles << "\n";
+    file << "Box:                  " << Box << "\n";
+    file << "Name:                 " << Name << "\n";
+    file << "Distance:             " << Distance << "\n";
+    file << "draw loot:            " << drawLoot << "\n";
+    file << "Box_:                 " << Box_ << "\n";
+    file << "Name_:                " << Name_ << "\n";
 }
 
 int main(int, char**)
@@ -121,13 +165,13 @@ int main(int, char**)
         {
             ImGui::Begin("PUNCHWARE MW2 CHAIR", &showAimbotMenu);
 
-            ImGui::Separator();
-
             ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_None;
             if (ImGui::BeginTabBar("MyTabBar", tab_bar_flags))
             {
                 if (ImGui::BeginTabItem("Aimbot"))
                 {
+                    ImGui::SeparatorText("Aimbot Settings");
+
                     ImGui::Checkbox("Aimbot", &AimbotIsOn);
 
                     // the dropdown box for Type
@@ -188,7 +232,7 @@ int main(int, char**)
                     ImGui::DragInt("Smooth Amount", &smoothAmount, 0.5f, 0, 100, "%d");
                     ImGui::DragInt("Smooth Acceleration", &smoothAcceleration, 0.5f, 0, 100, "%d");
 
-                    ImGui::Separator();
+                    ImGui::SeparatorText("Bone Settings");
 
                     const char* target_bone_combo_preview_value = target_bone[target_bone_item_current_idx];
                     if (ImGui::BeginCombo("Target Bone", target_bone_combo_preview_value))
@@ -208,7 +252,7 @@ int main(int, char**)
                     ImGui::Checkbox("Body scan", &bodyScan);
                     ImGui::Checkbox("Bone body scan first", &boneBodyScanFirst);
 
-                    ImGui::Separator();
+                    ImGui::SeparatorText("Automations");
 
                     ImGui::Checkbox("auto shoot", &autoShoot);
                     ImGui::Checkbox("triggerbot", &triggerBot);
@@ -221,7 +265,75 @@ int main(int, char**)
                 }
                 if (ImGui::BeginTabItem("ESP"))
                 {
-                    ImGui::Text("This is the Broccoli tab!\nblah blah blah blah blah");
+                    {
+                        ImGuiWindowFlags window_flags = ImGuiWindowFlags_HorizontalScrollbar;
+                        ImGui::BeginChild("Player & AI ESP Settings", ImVec2(ImGui::GetContentRegionAvail().x * 0.5f, 260), false, window_flags);
+
+                        ImGui::Text("Players & AI ESP Settings");
+
+                        ImGui::Checkbox("Box", &box);
+
+                        const char* box_type_combo_preview_value = box_type[box_type_item_current_idx];
+                        if (ImGui::BeginCombo("Box Type", box_type_combo_preview_value))
+                        {
+                            for (int n = 0; n < IM_ARRAYSIZE(box_type); n++)
+                            {
+                                const bool is_selected = (box_type_item_current_idx == n);
+                                if (ImGui::Selectable(box_type[n], is_selected))
+                                    box_type_item_current_idx = n;
+
+                                if (is_selected)
+                                    ImGui::SetItemDefaultFocus();
+                            }
+                            ImGui::EndCombo();
+                        }
+
+                        const char* team_combo_preview_value = team[team_item_current_idx];
+                        if (ImGui::BeginCombo("team", team_combo_preview_value))
+                        {
+                            for (int n = 0; n < IM_ARRAYSIZE(team); n++)
+                            {
+                                const bool is_selected = (team_item_current_idx == n);
+                                if (ImGui::Selectable(team[n], is_selected))
+                                    team_item_current_idx = n;
+
+                                if (is_selected)
+                                    ImGui::SetItemDefaultFocus();
+                            }
+                            ImGui::EndCombo();
+                        }
+
+                        ImGui::Checkbox("Name", &name);
+                        ImGui::Checkbox("Distance", &distance);
+                        ImGui::Checkbox("Skeleton", &skeleton);
+                        ImGui::Checkbox("Weapon name", &weaponName);
+                        ImGui::Checkbox("Snapline", &snapline);
+                        ImGui::Checkbox("Health bar", &healthBar);
+
+                        ImGui::EndChild();
+                    }
+
+                    {
+                        ImGuiWindowFlags window_flags = ImGuiWindowFlags_None;
+                        ImGui::BeginChild("Entities ESP settings", ImVec2(0, 260), true, window_flags);
+
+                        ImGui::Text("Entities ESP settings");
+                        ImGui::Checkbox("Draw Items", &drawItems);
+                        ImGui::Checkbox("Draw Explosives", &drawExplosives);
+                        ImGui::Checkbox("Draw Vehicles", &drawVehicles);
+                        ImGui::Checkbox("Box", &Box);
+                        ImGui::Checkbox("Name", &Name);
+                        ImGui::Checkbox("distance", &Distance);
+
+                        ImGui::EndChild();
+                    }
+
+                    ImGui::SeparatorText("Loot ESP Settings");
+
+                    ImGui::Checkbox("Draw Loot", &drawLoot);
+                    ImGui::Checkbox("Box", &Box_);
+                    ImGui::Checkbox("Name", &Name_);
+
                     ImGui::EndTabItem();
                 }
                 if (ImGui::BeginTabItem("Chams"))
