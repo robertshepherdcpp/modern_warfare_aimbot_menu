@@ -109,6 +109,17 @@ bool noRecoil = true;
 bool noShellShock = true;
 bool noFog = true;
 
+bool fastReload = true;
+bool UAV = true;
+bool nightVision = true;
+
+int FOV = 110;
+
+bool infinite_slide = true;
+bool air_stuck = false;
+
+bool tempUnlockAll = false;
+
 auto save_to_file() -> void
 {
     std::ofstream file("aimbot_menu.txt");
@@ -163,6 +174,13 @@ auto save_to_file() -> void
     file << "No Recoil:            " << noRecoil << "\n";
     file << "No Shell Shock:       " << noShellShock << "\n";
     file << "No Fog:               " << noFog << "\n";
+    file << "Fast reload:          " << fastReload << "\n";
+    file << "UAV:                  " << UAV << "\n";
+    file << "Night vision:         " << nightVision << "\n";
+    file << "FOV:                  " << FOV << "\n";
+    file << "Infinite slide:       " << infinite_slide << "\n";
+    file << "Air Stuck:            " << air_stuck << "\n";
+    file << "Temp Unlock All:      " << tempUnlockAll << "\n";
 }
 
 int main(int, char**)
@@ -423,6 +441,8 @@ int main(int, char**)
                     ImGui::Checkbox("Bullter Tracers", &BulletTracers);
                     ImGui::Checkbox("Coloured Game UI", &ColouredGameUI);
 
+                    ImGui::Separator();
+
                     ImGui::Text("Screenshots cleared: %d", num_screenshots_cleared);
 
                     ImGui::EndTabItem();
@@ -434,12 +454,58 @@ int main(int, char**)
                     ImGui::Checkbox("No shellshock", &noShellShock);
                     ImGui::Checkbox("No fog", &noFog);
 
+                    ImGui::Separator();
+
+                    ImGui::Text("Screenshots cleared: %d", num_screenshots_cleared);
+
                     ImGui::EndTabItem();
                 }
 
                 if (ImGui::BeginTabItem("Misc"))
                 {
-                    ImGui::Text("This is the Cucumber tab!\nblah blah blah blah blah");
+                    ImGui::SeparatorText("Game Settings");
+                    ImGui::Checkbox("Fast Reload", &fastReload);
+                    ImGui::Checkbox("UAV", &UAV);
+                    ImGui::Checkbox("Night Vision", &nightVision);
+                    ImGui::DragInt("FOV", &FOV, 1.0f, 0, 360);
+
+                    ImGui::SeparatorText("Fun Settings");
+                    ImGui::Checkbox("Infinite slide", &infinite_slide);
+                    ImGui::Checkbox("Air Stuck", &air_stuck);
+
+                    ImGui::Separator();
+                    ImGui::Checkbox("Temp unlock all", &tempUnlockAll);
+                    if (ImGui::Button("Disconnect"))
+                    {
+                        // Implement the disconnect.
+                    }
+                    static char buf1[64] = ""; ImGui::InputText("", buf1, 64);
+                    ImGui::SameLine();
+                    if (ImGui::Button("Send Command"))
+                    {
+                        // send the command.
+                    }
+                    if (ImGui::Button("Set PM Game 1"))
+                    {
+                        // Set PM Game 1
+                    }
+                    if (ImGui::Button("Set PM Game 2"))
+                    {
+                        // Set PM Game 2
+                    }
+                    if (ImGui::Button("Set PM Game"))
+                    {
+                        // Set PM Game
+                    }
+                    if (ImGui::Button("Game BIO"))
+                    {
+                        // Game BIO
+                    }
+
+                    ImGui::Separator();
+
+                    ImGui::Text("Screenshots cleaned: %d", num_screenshots_cleared);
+
                     ImGui::EndTabItem();
                 }
 
