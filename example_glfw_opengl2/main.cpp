@@ -120,6 +120,12 @@ bool air_stuck = false;
 
 bool tempUnlockAll = false;
 
+int PlayerAndAI_ = 400;
+int Vehicles_ = 800;
+int Explosives_ = 400;
+int Loot = 20;
+int Items = 100;
+
 auto save_to_file() -> void
 {
     std::ofstream file("aimbot_menu.txt");
@@ -181,6 +187,11 @@ auto save_to_file() -> void
     file << "Infinite slide:       " << infinite_slide << "\n";
     file << "Air Stuck:            " << air_stuck << "\n";
     file << "Temp Unlock All:      " << tempUnlockAll << "\n";
+    file << "PlayerAndAI:          " << PlayerAndAI_ << "\n";
+    file << "Vehicles:             " << Vehicles_ << "\n";
+    file << "Explosives:           " << Explosives_ << "\n";
+    file << "Loot:                 " << Loot << "\n";
+    file << "Items:                " << Items << "\n";
 }
 
 int main(int, char**)
@@ -511,7 +522,21 @@ int main(int, char**)
 
                 if (ImGui::BeginTabItem("Settings"))
                 {
-                    ImGui::Text("This is the Cucumber tab!\nblah blah blah blah blah");
+                    if (ImGui::Button("Factory Reset"))
+                    {
+                        // Factory Reset
+                    }
+
+                    ImGui::SeparatorText("Max Distances (FSP & Aimbot)");
+
+                    ImGui::DragInt("Players & AI", &PlayerAndAI_, 1.0f, 0, 1000);
+                    ImGui::DragInt("Vehicles", &Vehicles_, 1.0f, 0, 1000);
+                    ImGui::DragInt("Explosives", &Explosives_, 1.0f, 0, 1000);
+                    ImGui::DragInt("Loot", &Loot, 1.0f, 0, 1000);
+                    ImGui::DragInt("Items (MP)", &Items, 1.0f, 0, 1000);
+
+                    ImGui::SeparatorText("ESP & Chams Colours");
+
                     ImGui::EndTabItem();
                 }
 
