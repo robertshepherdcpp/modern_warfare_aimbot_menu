@@ -1,12 +1,3 @@
-// Dear ImGui: standalone example application for GLFW + OpenGL2, using legacy fixed pipeline
-// (GLFW is a cross-platform general purpose library for handling windows, inputs, OpenGL/Vulkan/Metal graphics context creation, etc.)
-// If you are new to Dear ImGui, read documentation from the docs/ folder + read the top of imgui.cpp.
-// Read online: https://github.com/ocornut/imgui/tree/master/docs
-
-// **DO NOT USE THIS CODE IF YOUR CODE/ENGINE IS USING MODERN OPENGL (SHADERS, VBO, VAO, etc.)**
-// **Prefer using the code in the example_glfw_opengl2/ folder**
-// See imgui_impl_glfw.cpp for details.
-
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl2.h"
@@ -16,6 +7,8 @@
 #endif
 #include <GLFW/glfw3.h>
 #include <fstream>
+#include <iostream>
+#include <string>
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS)
 #pragma comment(lib, "legacy_stdio_definitions")
@@ -140,7 +133,7 @@ static ImVec4 FriendlyEntity =        ImVec4(0.0f   / 255.0f, 255.0f / 255.0f, 0
 static ImVec4 LootColour =            ImVec4(255.0f / 255.0f, 255.f  / 255.0f, 255.f / 200.0f, 200.0f / 255.0f);
 static ImVec4 SpecialLoot =           ImVec4(255.0f / 255.0f, 191.0f / 255.0f, 26.f  / 200.0f, 200.0f / 255.0f);
 
-auto save_to_file() -> void
+auto save_to_file(std::string filename = "aimbot_menu.txt") -> void
 {
     std::ofstream file("aimbot_menu.txt");
     file << "aimbot:               " << AimbotIsOn << "\n";
@@ -206,6 +199,204 @@ auto save_to_file() -> void
     file << "Explosives:           " << Explosives_ << "\n";
     file << "Loot:                 " << Loot << "\n";
     file << "Items:                " << Items << "\n";
+    file.close();
+}
+
+auto loadFromFileToVariables() -> void
+{
+    std::ifstream file("aimbot_menu.txt");
+
+    std::string line; // variable to store each line
+
+    while (std::getline(file, line)) // read line by line from source
+    {
+        if (line.find("aimbot:") != std::string::npos) {
+            AimbotIsOn = (line.substr(22) == "1");
+        }
+        else if (line.find("types:") != std::string::npos) {
+            types_item_current_idx = std::stoi(line.substr(22));
+        }
+        else if (line.find("filter:") != std::string::npos) {
+            filter_item_current_idx = std::stoi(line.substr(22));
+        }
+        else if (line.find("priority:") != std::string::npos) {
+            priority_item_current_idx = std::stoi(line.substr(22));
+        }
+        else if (line.find("aim required:") != std::string::npos) {
+            AimRequired = (line.substr(22) == "1");
+        }
+        else if (line.find("min amin amount:") != std::string::npos) {
+            min_amin_amount = std::stof(line.substr(22));
+        }
+        else if (line.find("stick to target:") != std::string::npos) {
+            stickToTarget = (line.substr(22) == "1");
+        }
+        else if (line.find("ignore downed:") != std::string::npos) {
+            ignoreDowned = (line.substr(22) == "1");
+        }
+        else if (line.find("FOV check:") != std::string::npos) {
+            FOVcheck = (line.substr(22) == "1");
+        }
+        else if (line.find("FOV radius:") != std::string::npos) {
+            FOVradius = std::stoi(line.substr(22));
+        }
+        else if (line.find("smooth amount:") != std::string::npos) {
+            smoothAmount = std::stoi(line.substr(22));
+        }
+        else if (line.find("smooth acceleration:") != std::string::npos) {
+            smoothAcceleration = std::stoi(line.substr(22));
+        }
+        else if (line.find("target_bone:") != std::string::npos) {
+            target_bone_item_current_idx = std::stoi(line.substr(22));
+        }
+        else if (line.find("body scan:") != std::string::npos) {
+            bodyScan = (line.substr(22) == "1");
+        }
+        else if(line.find("bone body scan first:") != std::string::npos) {
+            boneBodyScanFirst = (line.substr(22) == "1");
+        }
+        else if (line.find("auto shoot:") != std::string::npos) {
+            autoShoot = (line.substr(22) == "1");
+        }
+        else if (line.find("triggerbot:") != std::string::npos) {
+            triggerBot = (line.substr(22) == "1");
+        }
+        else if (line.find("box type:") != std::string::npos) {
+            box_type_item_current_idx = std::stoi(line.substr(22));
+        }
+        else if (line.find("team:") != std::string::npos) {
+            team_item_current_idx = std::stoi(line.substr(22));
+        }
+        else if (line.find("name:") != std::string::npos) {
+            name = (line.substr(22) == "1");
+        }
+        else if (line.find("distance:") != std::string::npos) {
+            distance = (line.substr(22) == "1");
+        }
+        else if (line.find("skeleton:") != std::string::npos) {
+            skeleton = (line.substr(22) == "1");
+        }
+        if (line.find("weapon name:") != std::string::npos) {
+            weaponName = (line.substr(22) == "1");
+        }
+        else if (line.find("snapline:") != std::string::npos) {
+            snapline = (line.substr(22) == "1");
+        }
+        else if (line.find("health bar:") != std::string::npos) {
+            healthBar = (line.substr(22) == "1");
+        }
+        else if (line.find("draw items:") != std::string::npos) {
+            drawItems = (line.substr(22) == "1");
+        }
+        else if (line.find("draw explosives:") != std::string::npos) {
+            drawExplosives = (line.substr(22) == "1");
+        }
+        else if (line.find("draw vehicles:") != std::string::npos) {
+            drawVehicles = (line.substr(22) == "1");
+        }
+        else if (line.find("Box:") != std::string::npos) {
+            Box = (line.substr(22) == "1");
+        }
+        else if (line.find("Name:") != std::string::npos) {
+            Name = (line.substr(22) == "1");
+        }
+        else if (line.find("Distance:") != std::string::npos) {
+            Distance = (line.substr(22) == "1");
+        }
+        else if (line.find("draw loot:") != std::string::npos) {
+            drawLoot = (line.substr(22) == "1");
+        }
+        else if (line.find("Box_:") != std::string::npos) {
+            Box_ = (line.substr(22) == "1");
+        }
+        else if (line.find("Name_:") != std::string::npos) {
+            Name_ = (line.substr(22) == "1");
+        }
+        else if (line.find("Player and AI:") != std::string::npos) {
+            playerAndAI = (line.substr(22) == "1");
+        }
+        else if (line.find("entities:") != std::string::npos) {
+            entities = (line.substr(22) == "1");
+        }
+        else if (line.find("outline only:") != std::string::npos) {
+            outlineOnly = (line.substr(22) == "1");
+        }
+        else if (line.find("outline width:") != std::string::npos) {
+            outlineWidth = std::stoi(line.substr(22));
+        }
+        else if (line.find("type:") != std::string::npos) {
+            Type_item_current_idx = std::stoi(line.substr(22));
+        }
+        else if (line.find("Size:") != std::string::npos) {
+            Size = std::stoi(line.substr(22));
+        }
+        else if (line.find("Show on aimbot target:") != std::string::npos) {
+            showOnAimbotTarget = (line.substr(22) == "1");
+        }
+        else if (line.find("compass:") != std::string::npos) {
+            compass = (line.substr(22) == "1");
+        }
+        else if (line.find("compass size:") != std::string::npos) {
+            compass_size = std::stof(line.substr(22));
+        }
+        else if (line.find("Health Bar:") != std::string::npos) {
+            HealthBar = (line.substr(22) == "1");
+        }
+        else if (line.find("Server Info:") != std::string::npos) {
+            ServerInfo = (line.substr(22) == "1");
+        }
+        else if (line.find("Bullet Tracers:") != std::string::npos) {
+            BulletTracers = (line.substr(22) == "1");
+        }
+        else if (line.find("Coloured Game UI:") != std::string::npos) {
+            ColouredGameUI = (line.substr(22) == "1");
+        }
+        else if (line.find("No Recoil:") != std::string::npos) {
+            noRecoil = (line.substr(22) == "1");
+        }
+        else if (line.find("No Shell Shock:") != std::string::npos) {
+            noShellShock = (line.substr(22) == "1");
+        }
+        else if (line.find("No Fog:") != std::string::npos) {
+            noFog = (line.substr(22) == "1");
+        }
+        else if (line.find("Fast reload:") != std::string::npos) {
+            fastReload = (line.substr(22) == "1");
+        }
+        else if (line.find("UAV:") != std::string::npos) {
+            UAV = (line.substr(22) == "1");
+        }
+        else if (line.find("Night vision:") != std::string::npos) {
+            nightVision = (line.substr(22) == "1");
+        }
+        else if (line.find("FOV:") != std::string::npos) {
+            FOV = std::stoi(line.substr(22));
+        }
+        else if (line.find("Infinite slide:") != std::string::npos) {
+            infinite_slide = (line.substr(22) == "1");
+        }
+        else if (line.find("Air Stuck:") != std::string::npos) {
+            air_stuck = (line.substr(22) == "1");
+        }
+        else if (line.find("Temp Unlock All:") != std::string::npos) {
+            tempUnlockAll = (line.substr(22) == "1");
+        }
+        else if (line.find("PlayerAndAI:") != std::string::npos) {
+            PlayerAndAI_ = (line.substr(22) == "1");
+        }
+        else if (line.find("Vehicles:") != std::string::npos) {
+            Vehicles_ = (line.substr(22) == "1");
+        }
+        else if (line.find("Explosives:") != std::string::npos) {
+            Explosives_ = (line.substr(22) == "1");
+        }
+        else if (line.find("Loot:") != std::string::npos) {
+            Loot = (line.substr(22) == "1");
+        }
+        else if (line.find("Items:") != std::string::npos) {
+            Items = std::stoi(line.substr(22));
+        }
+    }
 }
 
 int main(int, char**)
@@ -214,7 +405,7 @@ int main(int, char**)
     if (!glfwInit())
         return 1;
 
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "Dear ImGui GLFW+OpenGL2 example", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(535, 535, "Dear ImGui GLFW+OpenGL2 example", nullptr, nullptr);
     if (window == nullptr)
         return 1;
     glfwMakeContextCurrent(window);
@@ -570,7 +761,61 @@ int main(int, char**)
 
                 if (ImGui::BeginTabItem("Configs"))
                 {
-                    ImGui::Text("This is the Cucumber tab!\nblah blah blah blah blah");
+                    ImGui::SeparatorText("Selected Config");
+                    ImGui::NewLine();
+                    std::string filename_str{};
+                    static char filename[64] = ""; ImGui::InputText("", filename, 64);
+                    if (ImGui::Button("Load"))
+                    {
+                        std::ifstream file(filename);
+                        if (file.is_open())
+                        {
+                            filename_str = filename;
+                        }
+                    }
+                    ImGui::SameLine();
+                    if (ImGui::Button("Delete") && filename_str.size() > 2)
+                    {
+                        std::ofstream file(filename_str);
+                        file << " ";
+                    }
+                    ImGui::SameLine();
+                    if (ImGui::Button("Set As Default"))
+                    {
+                        std::ifstream source("filename_str.txt"); // create ifstream object
+                        std::ofstream destination("aimbot_menu.txt"); // create ofstream object
+
+                        if (!source || !destination) // check if files are opened
+                        {
+                        }
+                        else
+                        {
+                            std::string line; // variable to store each line
+
+                            while (std::getline(source, line)) // read line by line from source
+                            {
+                                destination << line << "\n"; // write line to destination
+                            }
+                        }
+
+                        source.close(); // close source file
+                        destination.close(); // close destination file
+
+                        loadFromFileToVariables();
+                    }
+                    
+                    ImGui::Text("Double clicking a config copies it's name into the input text box");
+                    ImGui::Separator();
+
+                    ImGui::Text("Config name");
+                    ImGui::SameLine();
+                    static char filename_[64] = ""; ImGui::InputText("", filename_, 64);
+                    if (ImGui::Button("Save Config"))
+                    {
+                        save_to_file(std::string{filename_});
+                    }
+                    ImGui::Separator();
+                    ImGui::Text("Screenshots cleared: %d", num_screenshots_cleared);
                     ImGui::EndTabItem();
                 }
                 ImGui::EndTabBar();

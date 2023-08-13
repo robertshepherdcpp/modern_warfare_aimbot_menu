@@ -61,4 +61,7 @@
       <Filter>imgui</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="aimbot_menu.txt" />
+  </ItemGroup>
 </Project>
