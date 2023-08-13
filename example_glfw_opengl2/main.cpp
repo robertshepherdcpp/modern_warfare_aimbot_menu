@@ -804,7 +804,6 @@ int main(int, char**)
                         loadFromFileToVariables();
                     }
                     
-                    ImGui::Text("Double clicking a config copies it's name into the input text box");
                     ImGui::Separator();
 
                     ImGui::Text("Config name");
