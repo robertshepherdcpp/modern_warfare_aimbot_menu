@@ -405,7 +405,7 @@ int main(int, char**)
     if (!glfwInit())
         return 1;
 
-    GLFWwindow* window = glfwCreateWindow(535, 535, "Dear ImGui GLFW+OpenGL2 example", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(535, 535, "PUNCHWARE MW2 CHAIR", nullptr, nullptr);
     if (window == nullptr)
         return 1;
     glfwMakeContextCurrent(window);
